@@ -67,7 +67,6 @@ class TweetPreparion(ParseFeed):
         return publish_data
 
 
-
 def twitter_message(title, url, hashtag):
     try:
 
@@ -105,12 +104,12 @@ def main_post():
     post = twitter_dict(link_food)
     return post
 
+
 # print(main_post())
 #####POSTING##########
 import tweepy
 import time
 from decouple import config
-
 
 ####twitter key###
 consumer_key = config("CONSUMER_KEY")
@@ -123,45 +122,31 @@ auth.set_access_token(access_token, access_token_secret)
 ####log in ###
 api = tweepy.API(auth)
 post = main_post()
-####look in the timeline###
-time_line = api.user_timeline(screen_name="CavaTrendy", count=10, tweet_mode="extended")
-for t in time_line:
-    compare = t.full_text
-    for item in post:
-        print(compare)
-        print(item["TITLE"])
-        if item["TITLE"][:100] == compare[:100]:
-            print("Same")
-        else:
-            print("Not Same")
 
-# def twitter_message(text):
-#     return api.update_status(text)m
-#
-# def calculate_posting_time(time):11
-#     to_time = 0
-#     if time in (1, 2, 3, 4):
-#         to_time = time * 3000
-#     else:
-#         to_time = 3000
-#     return to_time
-#
-#
-# def main_posting():
-#     print(post)
-#     while len(post) > 0:
-#         print("Still elements? ", len(post))
-#         print('Time: ', calculate_posting_time(len(post)))
-#         for item in post:
-#             print("Still elements? ", len(post))
-#             print('Time: ', calculate_posting_time(len(post)))
-#             # calculate_posting_time(len(post))
-#             posting = twitter_message(item["TITLE"])
-#             time.sleep(calculate_posting_time(len(post)))
-#             element = post.remove(item)
-#             print('The popped element is:', element)
-#             print('The dictionary is:', post)
-#             print('Time: ', calculate_posting_time(len(post)))
-#     if len(post) == 0:
-#         print("No Elements ", len(post))
-#     return posting
+
+
+def twitter_message(text):
+    return api.update_status(text)
+
+
+def main_posting():
+    ####look in the timeline###
+    time_line = api.user_timeline(screen_name="CavaTrendy", count=10, tweet_mode="extended")
+    for t in time_line:
+        compare = t.full_text
+        for item in post:
+            print(compare)
+            print(item["TITLE"])
+            if item["TITLE"][:100] == compare[:100]:
+                print("Same")
+            else:
+                posting = twitter_message(item["TITLE"])
+                print('The dictionary is:', post)
+                print("Not Same")
+    return posting
+
+def main():
+    main_posting()
+
+if __name__ == "__main__":
+    main()
